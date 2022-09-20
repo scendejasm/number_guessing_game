@@ -21,13 +21,37 @@ main_menu () {
 }
 
 guessing_game () {
-  echo -e "\n TEST: $1 :Endgame"
-  if [[ $1 =~ ^[0-9]+$ ]]
-  then
-    echo $1 is a user_id
-  else
-    echo $1 is a username
-  fi
+  SECRET_NUMBER=$[ $RANDOM % 1000 + 1 ]
+  TRIES=1
+  echo -e "\n"
+  echo -e "Guess the secret number between 1 and 1000:"
+  echo -e "\nHINT: The secret number is $SECRET_NUMBER \n"
+  read PLAYER_GUESS
+  while [[ $PLAYER_GUESS != $SECRET_NUMBER ]]
+  do
+    if ! [[ $PLAYER_GUESS =~ ^[0-9]+$ ]]
+    then
+      echo -e "That is not and interger, guess again:"
+      TRIES=$((TRIES + 1))
+      echo $TRIES
+      read PLAYER_GUESS
+    elif [ $PLAYER_GUESS -gt $SECRET_NUMBER ]
+    then
+      echo -e "It's lower than that, guess again:"
+      TRIES=$((TRIES + 1))
+      echo $TRIES
+      read PLAYER_GUESS
+    elif [ $PLAYER_GUESS -lt $SECRET_NUMBER ]
+    then
+      echo -e "It's higher than that, guess again:"
+      TRIES=$((TRIES + 1))
+      echo $TRIES
+      read PLAYER_GUESS
+    fi
+  done
+  # echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  echo -e "You guessed it in $TRIES tries. The secret number was $SECRET_NUMBER. Nice job!"
+  # echo -e "\n"
 }
 
 main_menu
