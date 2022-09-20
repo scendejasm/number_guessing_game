@@ -8,13 +8,15 @@ main_menu () {
   echo Enter your username: 
   read PLAYER
   USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$PLAYER';")
+  # If player is not in database
   if [[ -z $USER_ID ]]
   then
     echo -e "\nWelcome, $PLAYER! It looks like this is your first time here."
     INSERT_PLAYER_RESULT=$($PSQL "INSERT INTO users(username) VALUES('$PLAYER');")
     USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$PLAYER';")
     guessing_game $USER_ID
-  else
+  else # Get player stats 
+    
     echo -e "\nWelcome back, $PLAYER"
     guessing_game $USER_ID 
   fi
@@ -49,6 +51,9 @@ guessing_game () {
       read PLAYER_GUESS
     fi
   done
+
+  INSERT_GAME_RESULT=$($PSQL "INSERT INTO games(user_id, user_guesses, user_guessed_secret, secret_number) VALUES($1, $TRIES, True, $SECRET_NUMBER)")
+  echo $INSERT_GAME_RESULT
   # echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
   echo -e "You guessed it in $TRIES tries. The secret number was $SECRET_NUMBER. Nice job!"
   # echo -e "\n"
