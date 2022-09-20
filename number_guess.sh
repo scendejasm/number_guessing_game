@@ -11,7 +11,9 @@ main_menu () {
   if [[ -z $USER_ID ]]
   then
     echo -e "\nWelcome, $PLAYER! It looks like this is your first time here."
-    guessing_game $PLAYER
+    INSERT_PLAYER_RESULT=$($PSQL "INSERT INTO users(username) VALUES('$PLAYER');")
+    USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$PLAYER';")
+    guessing_game $USER_ID
   else
     echo -e "\nWelcome back, $PLAYER"
     guessing_game $USER_ID 
@@ -20,7 +22,7 @@ main_menu () {
 
 guessing_game () {
   echo -e "\n TEST: $1 :Endgame"
-  if [[ $1 =~ '^[0-9]+$' ]]
+  if [[ $1 =~ ^[0-9]+$ ]]
   then
     echo $1 is a user_id
   else
