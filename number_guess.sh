@@ -28,9 +28,9 @@ main_menu () {
 guessing_game () {
   SECRET_NUMBER=$[ $RANDOM % 1000 + 1 ]
   NUMBER_OF_GUESSES=1
-  echo -e "\n"
+  #echo -e "\n"
   echo -e "Guess the secret number between 1 and 1000:"
-  echo -e "\nHINT: The secret number is $SECRET_NUMBER \n"
+  #echo -e "\nHINT: The secret number is $SECRET_NUMBER \n"
   read PLAYER_GUESS
   while [[ $PLAYER_GUESS != $SECRET_NUMBER ]]
   do
@@ -58,8 +58,7 @@ guessing_game () {
   INSERT_GAME_RESULT=$($PSQL "INSERT INTO games(user_id, user_guesses, user_guessed_secret, secret_number) VALUES($1, $NUMBER_OF_GUESSES, True, $SECRET_NUMBER)")
   #echo $INSERT_GAME_RESULT
   # echo -e "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-  echo -e "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
+  echo  "You guessed it in $NUMBER_OF_GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
   # echo -e "\n"
 }
-
 main_menu
